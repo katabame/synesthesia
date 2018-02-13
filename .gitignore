@@ -1,0 +1,12 @@
+
+Lib/
+
+Scripts/
+
+codealike\.json
+
+pyvenv\.cfg
+
+pip-selfcheck\.json
+
+config\.json
