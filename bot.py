@@ -1,10 +1,16 @@
 # encoding: utf-8
+from colorthief import ColorThief
 from colour import Color
 from discord.ext import commands
 import asyncio
 import discord
 import json
+import os
 import randomcolor
+import sys
+import tempfile
+import urllib.request
+import uuid
 
 with open('config.json', encoding='utf-8') as file:
 	config = json.load(file)
@@ -23,17 +29,17 @@ async def send(ctx, arg, arg1=None, arg2=None):
 			arg = arg.strip(',')
 			arg1 = arg1.strip(',')
 			arg2 = arg2.strip(',')
-			c = Color(rgb=(int(arg)/100, int(arg1)/100, int(arg2)/100))
+			c = Color(rgb=(int(arg)/255, int(arg1)/255, int(arg2)/255))
 			title = 'rgb(' + arg + ', ' + arg1 + ', ' + arg2 + ')'
 		else:
 			if ',' in arg:
 				lrgb = arg.split(',')
-				c = Color(rgb=(int(lrgb[0])/100, int(lrgb[1])/100, int(lrgb[2])/100))
+				c = Color(rgb=(int(lrgb[0])/255, int(lrgb[1])/255, int(lrgb[2])/255))
 			else:
 				c = Color(arg) if arg.startswith('#') else Color('#'+arg)
 
 			if ',' in ctx.message.content:
-				title = 'rgb(' + str(int(c.red*100)) + ', ' + str(int(c.green*100)) + ', ' + str(int(c.blue*100)) + ')'
+				title = 'rgb(' + str(int(c.red*255)) + ', ' + str(int(c.green*255)) + ', ' + str(int(c.blue*255)) + ')'
 			else:
 				title = c.hex
 
@@ -41,10 +47,12 @@ async def send(ctx, arg, arg1=None, arg2=None):
 		image_url = 'https://placehold.jp/'+c.hex_l.strip('#')+'/ffffff/300x300.png?text=%20'
 		embed.set_image(url=image_url)
 		embed.add_field(name="HEX", value='`' + c.hex_l + '`', inline=True)
-		embed.add_field(name="RGB", value='`rgb(' + str(int(c.red*100)) + '%, ' + str(int(c.green*100)) + '%, ' + str(int(c.blue*100)) + '%)`', inline=True)
+		embed.add_field(name="RGB Demical", value='`rgb(' + str(int(c.red*255)) + ', ' + str(int(c.green*255)) + ', ' + str(int(c.blue*255)) + ')`', inline=True)
+		embed.add_field(name="RGB Percent", value='`rgb(' + str(int(c.red*100)) + '%, ' + str(int(c.green*100)) + '%, ' + str(int(c.blue*100)) + '%)`', inline=True)
 		embed.add_field(name="HSL", value='`hsl(' + str(int(c.hue*100)) + '%, ' + str(int(c.saturation*100)) + '%, ' + str(int(c.luminance*100)) + '%)`', inline=True)
 		await ctx.message.channel.send(embed=embed)
-	except:
+	except Exception as e:
+		print(e.args)
 		await ctx.message.add_reaction('🚫')
 
 @bot.command(name='color', aliases=['see'], help='指定された色を表示します\n\n例:\n$color #ffd1dc\n$color ffd1dc\n$color 42,42,42\n$color 42, 42, 42', usage='[#hex|hex|r,g,b|r, g, b]')
@@ -59,12 +67,28 @@ async def random(ctx, arg=None):
 		rcolor = randomcolor.RandomColor().generate()
 	await send(ctx, rcolor[0])
 
+@bot.command(name='dominant', help='指定された画像のドミナントカラーを表示します\n\n例:\n$dominant https://ddlc.moe/images/screen4.png', usage='[画像添付 | 画像URL]')
+async def dominant(ctx, arg=None):
+	tmp = str(uuid.uuid4())
+	if arg and arg.startswith('http'):
+		with urllib.request.urlopen(arg) as data:
+			with open(tmp, 'wb') as f:
+				f.write(data.read())
+	else:
+		if ctx.message.attachments[0]:
+			await ctx.message.attachments[0].save(tmp)
+		else:
+			return await ctx.message.add_reaction('🚫')
+	rgb = ColorThief(tmp).get_color(quality=1)
+	await send(ctx, str(rgb).strip('()'))
+	os.remove(tmp)
+
 @bot.command(name='quit', aliases=['q'], hidden=True)
 async def shutdown(ctx):
 	print('[INFO] Shutting down...')
 	if bot.is_owner(ctx.message.author):
 		await ctx.message.add_reaction('👋🏻')
-		exit()
+		sys.exit(0)
 
 if __name__ == '__main__':
 	print('[INFO] Preparing synesthesia system...')
