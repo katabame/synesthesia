@@ -3,7 +3,7 @@ async-timeout==2.0.0
 chardet==3.0.4
 colorthief==0.2.1
 colour==0.1.5
-discord.py==1.0.0a0
+-e git+https://github.com/Rapptz/discord.py.git@355eb08b25b5c46c4c061cf50594650738ac09cf#egg=discord.py
 idna==2.6
 multidict==4.1.0
 Pillow==5.0.0
