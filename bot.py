@@ -54,7 +54,7 @@ async def send(ctx, arg, arg1=None, arg2=None):
             colour=discord.Colour(int(c.hex_l.strip('#'), 16)),
             url=f"http://www.colorhexa.com/{c.hex_l.strip('#')}")
         image_url = f"https://placehold.jp/{c.hex_l.strip('#')}/ffffff/300x300.png?text=%20"
-        embed.set_image(url=image_url)
+        embed.set_thumbnail(url=image_url)
         embed.add_field(
             name="HEX",
             value=f"`{c.hex_l}`",
