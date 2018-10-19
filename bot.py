@@ -16,7 +16,7 @@ with open('config.json', encoding='utf-8') as file:
 bot = commands.Bot(
     command_prefix=config['prefix'],
     description=f"Discordで色を見ることが出来るBotです。\n"
-                f"製作者: @katabame#3778\n"
+                f"製作者: @katabame#7736\n"
                 f"\n"
                 f"Version: {config['version']}\n"
                 f"変更履歴: {config['changelog']}")
@@ -99,7 +99,7 @@ async def random(ctx, arg=None):
     help='指定された画像のドミナントカラーを表示します\n\n例:\n$dominant https://ddlc.moe/images/screen4.png',
     usage='[画像添付 | 画像URL]')
 async def dominant(ctx, arg=None):
-    tmp = str(uuid.uuid4())
+    tmp = str(uuid.uuid1())
     if arg and arg.startswith('http'):
         with requests.get(url=arg) as data:
             with open(tmp, 'wb') as f:
