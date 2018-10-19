@@ -1,9 +1,7 @@
-<img src="image/avatar.png" width="200px">
-
 # Synesthesia
 Discordで色を見ることが出来るBotです。
 
-<a href="https://discordapp.com/api/oauth2/authorize?client_id=412911341217644557&permissions=16448&scope=bot" target="_blank"><img src="image/banner.png" width="300px"></a>
+<a href="https://discordapp.com/api/oauth2/authorize?client_id=412911341217644557&permissions=16448&scope=bot" target="_blank">Discordサーバーに追加</a> (uptimeを保証していません)
 
 # 使い方
 
