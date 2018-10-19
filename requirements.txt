@@ -1,15 +1,5 @@
-aiohttp==2.2.5
-async-timeout==2.0.0
-certifi==2018.10.15
-chardet==3.0.4
-colorthief==0.2.1
-colour==0.1.5
--e git+https://github.com/Rapptz/discord.py.git@355eb08b25b5c46c4c061cf50594650738ac09cf#egg=discord.py
-idna==2.6
-multidict==4.1.0
-Pillow==5.0.0
-randomcolor==0.4.4.5
-requests==2.20.0
-urllib3==1.24
-websockets==4.0.1
-yarl==1.1.0
+colorthief
+colour
+-e git+https://github.com/Rapptz/discord.py.git@rewrite#egg=discord.py
+randomcolor
+requests
